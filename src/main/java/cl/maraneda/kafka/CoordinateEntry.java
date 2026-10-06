@@ -2,10 +2,6 @@ package cl.maraneda.kafka;
 
 public record CoordinateEntry(Double num, CardinalPoint dir) {
 
-    public String toString(){
-        return String.format("%f %c", num, dir.getChar());
-    }
-
     public static CoordinateEntry createNorth(Double n){
         return new CoordinateEntry(n, n > 0 ? CardinalPoint.NORTH : CardinalPoint.SOUTH);
     }

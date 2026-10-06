@@ -3,7 +3,6 @@ package cl.maraneda.kafka;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.LongDeserializer;
-import org.apache.kafka.common.serialization.StringDeserializer;
 
 import java.time.Duration;
 import java.util.List;
@@ -14,13 +13,13 @@ public class Consumer {
         Properties props = new Properties();
         props.setProperty("bootstrap.servers", "localhost:9092");
         props.setProperty("key.deserializer", LongDeserializer.class.getCanonicalName());
-        props.setProperty("value.deserializer", StringDeserializer.class.getCanonicalName());
-        props.setProperty("group.id", "TestGroup");
+        props.setProperty("value.deserializer", TruckLocationDeserializer.class.getCanonicalName());
+        props.setProperty("group.id", "TestGroup2");
 
-        try(KafkaConsumer<Long, String> cons = new KafkaConsumer<>(props)){
+        try(KafkaConsumer<Long, TruckLocation> cons = new KafkaConsumer<>(props)){
             cons.subscribe(List.of("topico1"));
-            ConsumerRecords<Long, String> recs = cons.poll(Duration.ofSeconds(2400));
-            recs.forEach(r -> System.out.format("Message received: Truck id = %d, coordinates = %s%n", r.key(), r.value()));
+            ConsumerRecords<Long, TruckLocation> recs = cons.poll(Duration.ofSeconds(2400));
+            recs.forEach(r -> System.out.format("Message received: %s%n", r.toString()));
         }
     }
 }
