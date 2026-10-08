@@ -1,0 +1,38 @@
+{
+  "type": "record",
+  "name": "TruckLocation",
+  "namespace": "cl.maraneda.kafka",
+  "fields": [
+    {
+      "name": "id",
+      "type": [ "null", "long" ],
+      "default": null
+    },
+    {
+      "name": "latitude",
+      "type": {
+        "type": "record",
+        "name": "CoordinateEntry",
+        "fields": [
+          {
+            "name": "num",
+            "type": "double"
+          },
+          {
+            "name": "dir",
+            "type": {
+              "type": "enum",
+              "name": "CardinalPoint",
+              "symbols": ["N", "S", "E", "W"]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "longitude",
+      "type": "CoordinateEntry"
+    }
+  ]
+}
+
