@@ -19,13 +19,14 @@ public class Producer {
         props.setProperty("apicurio.registry.url", "http://localhost:8081/apis/registry/v3");
         props.setProperty("apicurio.registry.auto-register", "true");
         props.setProperty("apicurio.registry.artifact-resolver-strategy", TopicIdStrategy.class.getCanonicalName() );
+        props.setProperty("partitioner.class", TruckPartitioner.class.getName());
         System.setProperty("org.apache.avro.SERIALIZABLE_PACKAGES","cl.maraneda.kafka.pojos");
 
         List<ProducerRecord<Long, TruckLocation>> trucks = List.of(
-                new ProducerRecord<>("topico1", 1L, TruckLocationFactory.createNorthEast(1L, 20.1, 40.2)),
-                new ProducerRecord<>("topico1", 2L, TruckLocationFactory.createNorthWest(2L, 25.1, 45.2)),
-                new ProducerRecord<>("topico1", 3L, TruckLocationFactory.createSouthEast(3L, 30.1, 50.2)),
-                new ProducerRecord<>("topico1", 4L, TruckLocationFactory.createSouthWest(4L, 35.1, 55.2))
+                new ProducerRecord<>("topico4", 1L, TruckLocationFactory.createNorthEast(1L, 20.1, 40.2)),
+                new ProducerRecord<>("topico4", 2L, TruckLocationFactory.createNorthWest(2L, 25.1, 45.2)),
+                new ProducerRecord<>("topico4", 3L, TruckLocationFactory.createSouthEast(3L, 30.1, 50.2)),
+                new ProducerRecord<>("topico4", 4L, TruckLocationFactory.createSouthWest(4L, 35.1, 55.2))
         );
 
         try (KafkaProducer<Long, TruckLocation> producer = new KafkaProducer<>(props)) {

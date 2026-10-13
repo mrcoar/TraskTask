@@ -16,15 +16,19 @@ public class Consumer {
         props.setProperty("bootstrap.servers", "localhost:9092");
         props.setProperty("key.deserializer", LongDeserializer.class.getCanonicalName());
         props.setProperty("value.deserializer", AvroKafkaDeserializer.class.getName());
-        props.setProperty("group.id", "TestGroup3");
+        props.setProperty("group.id", "TestGroup4");
         props.setProperty("apicurio.registry.use-specific-avro-reader", "true");
         props.setProperty("apicurio.registry.url", "http://localhost:8081/apis/registry/v3");
         System.setProperty("org.apache.avro.SERIALIZABLE_PACKAGES","cl.maraneda.kafka.pojos");
-
-        try(KafkaConsumer<Long, TruckLocation> cons = new KafkaConsumer<>(props)){
-            cons.subscribe(List.of("topico1"));
-            ConsumerRecords<Long, TruckLocation> recs = cons.poll(Duration.ofSeconds(2400));
-            recs.forEach(r -> System.out.format("Message received: %s%n", r.toString()));
+        while(true) {
+            try (KafkaConsumer<Long, TruckLocation> cons = new KafkaConsumer<>(props)) {
+                cons.subscribe(List.of("topico4"));
+                ConsumerRecords<Long, TruckLocation> recs = cons.poll(Duration.ofSeconds(2400));
+                recs.forEach(r -> System.out.format("Message received: %s%n", r.toString()));
+                if(recs.isEmpty()){
+                    break;
+                }
+            }
         }
     }
 }
