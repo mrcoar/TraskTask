@@ -1,6 +1,7 @@
 
 package cl.maraneda.kafka;
 
+import cl.maraneda.kafka.pojos.TruckLocation;
 import org.apache.kafka.clients.producer.Partitioner;
 import org.apache.kafka.common.Cluster;
 import org.apache.kafka.common.PartitionInfo;
@@ -12,53 +13,24 @@ import java.util.Map;
 public class TruckPartitioner implements Partitioner {
 
     @Override
-    public int partition(
-            String topic,
-            Object key,
-            byte[] keyBytes,
-            Object value,
-            byte[] valueBytes,
-            Cluster cluster) {
-
-        List<PartitionInfo> partitions =
-                cluster.availablePartitionsForTopic(topic);
-
+    public int partition(String topic, Object key, byte[] keyBytes, Object value, byte[] valueBytes, Cluster cluster) {
+        List<PartitionInfo> partitions = cluster.availablePartitionsForTopic(topic);
         if (partitions.isEmpty()) {
             partitions = cluster.partitionsForTopic(topic);
         }
-
         if (partitions.isEmpty()) {
-            throw new IllegalStateException(
-                    "No hay particiones conocidas para el tópico: " + topic
-            );
+            throw new IllegalStateException("No hay particiones conocidas para el tópico: " + topic);
         }
 
-        // Regla especial: la clave 1 va a la partición 2,
-        // siempre que esa partición exista.
-        if (key instanceof Number
-                && ((Number) key).longValue() == 1L) {
-
-            for (PartitionInfo partition : partitions) {
-                if (partition.partition() == 2) {
-                    return 2;
-                }
-            }
-
-            throw new IllegalStateException(
-                    "El tópico " + topic
-                            + " no tiene disponible la partición 2"
-            );
+        if(value instanceof TruckLocation tl && tl.getLatitude().getNum() == 37.2431 && tl.getLongitude().getNum() == 115.793){
+            return 5;
         }
 
-        // Si no hay clave, utilizar una partición disponible.
         if (keyBytes == null) {
             return partitions.get(0).partition();
         }
 
-        // Hash positivo y resultado dentro del rango válido.
-        int index = Utils.toPositive(Utils.murmur2(keyBytes))
-                % partitions.size();
-
+        int index = Utils.toPositive(Utils.murmur2(keyBytes)) % partitions.size();
         return partitions.get(index).partition();
     }
 

@@ -26,7 +26,8 @@ public class Producer {
                 new ProducerRecord<>("topico4", 1L, TruckLocationFactory.createNorthEast(1L, 20.1, 40.2)),
                 new ProducerRecord<>("topico4", 2L, TruckLocationFactory.createNorthWest(2L, 25.1, 45.2)),
                 new ProducerRecord<>("topico4", 3L, TruckLocationFactory.createSouthEast(3L, 30.1, 50.2)),
-                new ProducerRecord<>("topico4", 4L, TruckLocationFactory.createSouthWest(4L, 35.1, 55.2))
+                new ProducerRecord<>("topico4", 4L, TruckLocationFactory.createSouthWest(4L, 35.1, 55.2)),
+                new ProducerRecord<>("topico4", 5L, TruckLocationFactory.createNorthEast(5L, 37.2431, 115.793))
         );
 
         try (KafkaProducer<Long, TruckLocation> producer = new KafkaProducer<>(props)) {
