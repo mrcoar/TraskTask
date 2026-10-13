@@ -1,7 +1,7 @@
 {
   "type": "record",
   "name": "TruckLocation",
-  "namespace": "cl.maraneda.kafka",
+  "namespace": "cl.maraneda.kafka.pojos",
   "fields": [
     {
       "name": "id",
